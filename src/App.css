@@ -1,0 +1,70 @@
+body {
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+/* Styling for game buttons */
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* Styling for the main game board */
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 200px);
+  grid-gap: 5px;
+  margin-top: 20px;
+}
+
+/* Styling for each cell in the main game board */
+.cell {
+  width: 200px;
+  height: 200px;
+  font-size: 24px;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Styling for sub-boards within the main game board */
+.sub-board {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-gap: 2px;
+}
+
+/* Styling for cells within sub-boards */
+.sub-cell {
+  width: 60px;
+  height: 60px;
+  font-size: 12px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Styling for sub-boards within sub-boards */
+.ssub-board {
+  display: grid;
+  grid-template-columns: repeat(3, 20px);
+  grid-gap: 1px;
+}
+
+/* Styling for cells within sub-boards */
+.ssub-cell {
+  width: 20px;
+  height: 20px;
+  font-size: 6px;
+  border: .05px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
