@@ -5,6 +5,7 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [gameLevel, setGameLevel] = useState(null);
   const [board, setBoard] = useState([]);
+  var playerWon = false;
 
   const startGame = (level) => {
     setGameLevel(level);
@@ -13,6 +14,8 @@ function App() {
   const resetGame = () => {
     setCurrentPlayer('X');
     setGameLevel(null);
+    setBoard([]);
+    playerWon = false;
   };
 
   const initializeGameBoard = (level) => {
@@ -41,6 +44,46 @@ function App() {
     setBoard(newBoard);
   };
 
+  function updateBoard(prevBoard, cellIndex, subIndex = null, ssubIndex = null) {
+    // Create a deep copy of the board to avoid mutating the state directly
+    let newBoard = JSON.parse(JSON.stringify(prevBoard));
+
+    if (gameLevel === 'Easy' && newBoard[cellIndex] === null) {
+      newBoard[cellIndex] = currentPlayer;
+      if (checkWinner(newBoard, currentPlayer)) {
+        playerWon = true;
+      }
+    }
+
+    if (gameLevel === 'Medium' && subIndex !== null) {
+      if (newBoard[cellIndex].subBoard[subIndex] === null) {
+        newBoard[cellIndex].subBoard[subIndex] = currentPlayer;
+        if (checkWinner(newBoard[cellIndex].subBoard, currentPlayer)) {
+          newBoard[cellIndex].value = currentPlayer;
+        }
+        if (checkWinner(newBoard, currentPlayer)) {
+          playerWon = true;
+        }
+      }
+    }
+
+    if (gameLevel === 'Hard' && subIndex !== null && ssubIndex !== null) {
+      if (newBoard[cellIndex].subBoard[subIndex].ssubBoard[ssubIndex] === null) {
+        newBoard[cellIndex].subBoard[subIndex].ssubBoard[ssubIndex] = currentPlayer;
+        if (checkWinner(newBoard[cellIndex].subBoard[subIndex].ssubBoard, currentPlayer)) {
+          newBoard[cellIndex].subBoard[subIndex].value = currentPlayer;
+        }
+        if (checkWinner(newBoard[cellIndex].subBoard, currentPlayer)) {
+          newBoard[cellIndex].value = currentPlayer;
+        }
+        if (checkWinner(newBoard, currentPlayer)) {
+          playerWon = true;
+        }
+      }
+    }
+    return newBoard;
+  }
+
   const handleClick = (cellIndex, subIndex = null, ssubIndex = null) => {
 
     /* 
@@ -48,43 +91,43 @@ function App() {
       ensure player clicked in an allowed cell 
     */
 
-    let playerWon = false;
+    let newBoard = updateBoard(board, cellIndex, subIndex, ssubIndex);
 
-    setBoard(prevBoard => {
-      // Create a deep copy of the board to avoid mutating the state directly
-      let newBoard = JSON.parse(JSON.stringify(prevBoard));
+    setBoard(prevBoard => newBoard);
 
-      if (gameLevel === 'Easy' && newBoard[cellIndex] === null) {
-        newBoard[cellIndex] = currentPlayer;
-      }
-
-      if (gameLevel === 'Medium' && subIndex !== null) {
-        if (newBoard[cellIndex].subBoard[subIndex] === null) {
-          newBoard[cellIndex].subBoard[subIndex] = currentPlayer;
-        }
-      }
-
-      if (gameLevel === 'Hard' && subIndex !== null && ssubIndex !== null) {
-        if (newBoard[cellIndex].subBoard[subIndex].ssubBoard[ssubIndex] === null) {
-          newBoard[cellIndex].subBoard[subIndex].ssubBoard[ssubIndex] = currentPlayer;
-        }
-      }
-      /*
-        **ToDo**
-        rest of the logic for handeling wins
-      */
-      console.log(newBoard);
-      return newBoard;
-    });
-
-    setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
-
-    // final win
     if (playerWon) {
       alert(`player ${currentPlayer} won`)
       resetGame();
+      return;
     }
+
+    setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
   };
+
+  function checkWinner(board, lastPlayer) {
+    const winningCombinations = [
+      [0, 1, 2], // Top row
+      [3, 4, 5], // Middle row
+      [6, 7, 8], // Bottom row
+      [0, 3, 6], // Left column
+      [1, 4, 7], // Middle column
+      [2, 5, 8], // Right column
+      [0, 4, 8], // Diagonal from top-left to bottom-right
+      [2, 4, 6]  // Diagonal from top-right to bottom-left
+    ];
+
+    const getValue = (cell) => {
+      return typeof cell === 'object' && cell !== null ? cell.value : cell;
+    };
+
+    for (let combo of winningCombinations) {
+      if (combo.every(index => getValue(board[index]) === lastPlayer)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   const renderSSubCell = (ssubCell, ssubIndex, cellIndex, subIndex) => {
     return (
@@ -96,14 +139,14 @@ function App() {
 
   const renderSubCell = (subCell, subIndex, cellIndex, level) => {
     if (level === 'Hard') {
-      if(subCell.value){
+      if (subCell.value) {
         return (
           <div key={subIndex} className="sub-cell" onClick={() => handleClick(cellIndex, subIndex)}>
             {subCell.value}
           </div>
         );
       }
-      else{
+      else {
         return (
           <div key={subIndex} className="ssub-board">
             {subCell.ssubBoard.map((ssubCell, ssubIndex) => renderSSubCell(ssubCell, ssubIndex, cellIndex, subIndex))}
@@ -134,7 +177,7 @@ function App() {
           </div>
         );
       }
-      else{
+      else {
         return (
           <div key={cellIndex} className="sub-board">
             {cell.subBoard.map((subCell, subIndex) => renderSubCell(subCell, subIndex, cellIndex, level))}
