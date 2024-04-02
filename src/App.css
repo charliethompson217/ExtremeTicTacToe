@@ -25,13 +25,15 @@ button:hover {
 
 #game-board {
   display: grid;
-  grid-template-columns: repeat(3, 200px);
+  grid-template-columns: repeat(3, 210px);
   justify-content: center;
-  grid-gap: 10px;
+  grid-gap: 15px;
   margin: 20px auto;
 }
 
-.cell, .sub-cell, .ssub-cell {
+.cell,
+.sub-cell,
+.ssub-cell {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,7 +41,9 @@ button:hover {
   transition: background-color 0.3s ease;
 }
 
-.cell:hover, .sub-cell:hover, .ssub-cell:hover {
+.cell:hover,
+.sub-cell:hover,
+.ssub-cell:hover {
   background-color: #efefef;
 }
 
@@ -54,7 +58,7 @@ button:hover {
 .sub-board {
   display: grid;
   grid-template-columns: repeat(3, 66px);
-  grid-gap: 2px;
+  grid-gap: 4px;
 }
 
 .sub-cell {
@@ -68,7 +72,7 @@ button:hover {
 .ssub-board {
   display: grid;
   grid-template-columns: repeat(3, 20px);
-  grid-gap: 1px;
+  grid-gap: 2px;
 }
 
 .ssub-cell {
