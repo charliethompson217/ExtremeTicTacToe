@@ -7,6 +7,7 @@ function App() {
   const [board, setBoard] = useState([]);
   var playerWon = false;
   var playerMoved = false;
+  var playersTied = false;
 
   const startGame = (level) => {
     setGameLevel(level);
@@ -17,6 +18,7 @@ function App() {
     setGameLevel(null);
     setBoard([]);
     playerWon = false;
+    playersTied = false;
   };
 
   const initializeGameBoard = (level) => {
@@ -55,6 +57,9 @@ function App() {
       if (checkWinner(newBoard, currentPlayer)) {
         playerWon = true;
       }
+      else if(checkTie(newBoard)){
+        playersTied = true;
+      }
     }
 
     if (gameLevel === 'Medium' && subIndex !== null) {
@@ -64,8 +69,14 @@ function App() {
         if (checkWinner(newBoard[cellIndex].subBoard, currentPlayer)) {
           newBoard[cellIndex].value = currentPlayer;
         }
+        else if(checkTie(newBoard[cellIndex].subBoard)){
+          newBoard[cellIndex].value = "Tie";
+        }
         if (checkWinner(newBoard, currentPlayer)) {
           playerWon = true;
+        }
+        else if(checkTie(newBoard)){
+          playersTied = true;
         }
       }
     }
@@ -77,11 +88,20 @@ function App() {
         if (checkWinner(newBoard[cellIndex].subBoard[subIndex].ssubBoard, currentPlayer)) {
           newBoard[cellIndex].subBoard[subIndex].value = currentPlayer;
         }
+        else if(checkTie(newBoard[cellIndex].subBoard[subIndex].ssubBoard)){
+          newBoard[cellIndex].value = "Tie";
+        }
         if (checkWinner(newBoard[cellIndex].subBoard, currentPlayer)) {
           newBoard[cellIndex].value = currentPlayer;
         }
+        else if(checkTie(newBoard[cellIndex].subBoard)){
+          newBoard[cellIndex].value = "Tie";
+        }
         if (checkWinner(newBoard, currentPlayer)) {
           playerWon = true;
+        }
+        else if(checkTie(newBoard)){
+          playersTied = true;
         }
       }
     }
@@ -104,9 +124,15 @@ function App() {
       resetGame();
       return;
     }
+    if (playersTied) {
+      alert(`players tied`)
+      resetGame();
+      return;
+    }
     if(playerMoved )
       setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
     playerMoved = false;
+    playersTied = false;
   };
 
   function checkWinner(board, lastPlayer) {
@@ -131,6 +157,19 @@ function App() {
       }
     }
     return false;
+  }
+  function checkTie(board) {
+
+    const getValue = (cell) => {
+      return typeof cell === 'object' && cell !== null ? cell.value : cell;
+    };
+
+    for (let cell of board) {
+      if (getValue(cell) === null) {
+        return false;
+      }
+    }
+    return true;
   }
 
 
