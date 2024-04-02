@@ -6,6 +6,7 @@ function App() {
   const [gameLevel, setGameLevel] = useState(null);
   const [board, setBoard] = useState([]);
   var playerWon = false;
+  var playerMoved = false;
 
   const startGame = (level) => {
     setGameLevel(level);
@@ -50,6 +51,7 @@ function App() {
 
     if (gameLevel === 'Easy' && newBoard[cellIndex] === null) {
       newBoard[cellIndex] = currentPlayer;
+      playerMoved = true;
       if (checkWinner(newBoard, currentPlayer)) {
         playerWon = true;
       }
@@ -58,6 +60,7 @@ function App() {
     if (gameLevel === 'Medium' && subIndex !== null) {
       if (newBoard[cellIndex].subBoard[subIndex] === null) {
         newBoard[cellIndex].subBoard[subIndex] = currentPlayer;
+        playerMoved = true;
         if (checkWinner(newBoard[cellIndex].subBoard, currentPlayer)) {
           newBoard[cellIndex].value = currentPlayer;
         }
@@ -70,6 +73,7 @@ function App() {
     if (gameLevel === 'Hard' && subIndex !== null && ssubIndex !== null) {
       if (newBoard[cellIndex].subBoard[subIndex].ssubBoard[ssubIndex] === null) {
         newBoard[cellIndex].subBoard[subIndex].ssubBoard[ssubIndex] = currentPlayer;
+        playerMoved = true;
         if (checkWinner(newBoard[cellIndex].subBoard[subIndex].ssubBoard, currentPlayer)) {
           newBoard[cellIndex].subBoard[subIndex].value = currentPlayer;
         }
@@ -100,8 +104,9 @@ function App() {
       resetGame();
       return;
     }
-
-    setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+    if(playerMoved )
+      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+    playerMoved = false;
   };
 
   function checkWinner(board, lastPlayer) {
