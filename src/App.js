@@ -73,6 +73,7 @@ function App() {
         **ToDo**
         rest of the logic for handeling wins
       */
+      console.log(newBoard);
       return newBoard;
     });
 
@@ -95,11 +96,20 @@ function App() {
 
   const renderSubCell = (subCell, subIndex, cellIndex, level) => {
     if (level === 'Hard') {
-      return (
-        <div key={subIndex} className="ssub-board">
-          {subCell.ssubBoard.map((ssubCell, ssubIndex) => renderSSubCell(ssubCell, ssubIndex, cellIndex, subIndex))}
-        </div>
-      );
+      if(subCell.value){
+        return (
+          <div key={subIndex} className="sub-cell" onClick={() => handleClick(cellIndex, subIndex)}>
+            {subCell.value}
+          </div>
+        );
+      }
+      else{
+        return (
+          <div key={subIndex} className="ssub-board">
+            {subCell.ssubBoard.map((ssubCell, ssubIndex) => renderSSubCell(ssubCell, ssubIndex, cellIndex, subIndex))}
+          </div>
+        );
+      }
     } else {
       return (
         <div key={subIndex} className="sub-cell" onClick={() => handleClick(cellIndex, subIndex)}>
@@ -117,11 +127,20 @@ function App() {
         </div>
       );
     } else {
-      return (
-        <div key={cellIndex} className="sub-board">
-          {cell.subBoard.map((subCell, subIndex) => renderSubCell(subCell, subIndex, cellIndex, level))}
-        </div>
-      );
+      if (cell.value) {
+        return (
+          <div key={cellIndex} className="cell" onClick={() => handleClick(cellIndex)}>
+            {cell.value}
+          </div>
+        );
+      }
+      else{
+        return (
+          <div key={cellIndex} className="sub-board">
+            {cell.subBoard.map((subCell, subIndex) => renderSubCell(subCell, subIndex, cellIndex, level))}
+          </div>
+        );
+      }
     }
   };
 
