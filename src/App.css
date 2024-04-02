@@ -1,70 +1,89 @@
 body {
   font-family: 'Arial', sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
   text-align: center;
+  margin: 0;
+  padding: 20px;
 }
 
-/* Styling for game buttons */
 button {
-  font-size: 16px;
+  font-size: 18px;
   padding: 10px 20px;
   margin: 10px;
   cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
-/* Styling for the main game board */
+button:hover {
+  background-color: #0056b3;
+}
+
 #game-board {
   display: grid;
   grid-template-columns: repeat(3, 200px);
-  grid-gap: 5px;
-  margin-top: 20px;
+  justify-content: center;
+  grid-gap: 10px;
+  margin: 20px auto;
 }
 
-/* Styling for each cell in the main game board */
+.cell, .sub-cell, .ssub-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cell:hover, .sub-cell:hover, .ssub-cell:hover {
+  background-color: #efefef;
+}
+
 .cell {
   width: 200px;
   height: 200px;
-  font-size: 24px;
-  border: 2px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  font-size: 36px;
+  border: 2px solid #007bff;
+  color: #007bff;
 }
 
-/* Styling for sub-boards within the main game board */
 .sub-board {
   display: grid;
-  grid-template-columns: repeat(3, 60px);
+  grid-template-columns: repeat(3, 66px);
   grid-gap: 2px;
 }
 
-/* Styling for cells within sub-boards */
 .sub-cell {
-  width: 60px;
-  height: 60px;
-  font-size: 12px;
-  border: 1px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  width: 66px;
+  height: 66px;
+  font-size: 20px;
+  border: 1px solid #28a745;
+  color: #28a745;
 }
 
-/* Styling for sub-boards within sub-boards */
 .ssub-board {
   display: grid;
   grid-template-columns: repeat(3, 20px);
   grid-gap: 1px;
 }
 
-/* Styling for cells within sub-boards */
 .ssub-cell {
   width: 20px;
   height: 20px;
-  font-size: 6px;
-  border: .05px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  font-size: 12px;
+  border: 0.5px solid #dc3545;
+  color: #dc3545;
+}
+
+.App {
+  max-width: 660px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
