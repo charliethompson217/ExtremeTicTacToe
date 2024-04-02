@@ -202,7 +202,13 @@ function App() {
       )}
       <div id="game-board" className={gameLevel ? `level-${gameLevel.toLowerCase()}` : ''}>
         {renderGameBoard()}
+        
       </div>
+      {gameLevel && (
+        <div>
+          Player {currentPlayer}'s turn
+        </div>
+      )}
     </div>
   );
 }
